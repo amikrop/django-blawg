@@ -1,0 +1,34 @@
+{% extends 'blawg/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{{ blog }}{% endblock %}
+
+{% block main %}
+<h1>{{ blog }}</h1>
+<h2>{{ blog.description }}</h2>
+<div class="trunk">
+    {% if messages %}
+    <div class="success">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% for entry in entry_list %}
+    <div class="entity">
+        <p class="title"><a href="{{ entry.get_absolute_url }}">{{ entry }}</a></p>
+        <p>{{ entry.content|linebreaks }}</p>
+    </div>
+    {% empty %}
+    <p class="info">{% trans 'Blog has no entries' %}</p>
+    {% endfor %}
+</div>
+<nav>
+    {% if owner %}
+    <p><a href="{% url 'blawg:blog_update' user blog.slug %}">{% trans 'Edit' %}</a></p>
+    <p><a href="{% url 'blawg:entry_create' user blog.slug %}">{% trans 'New entry' %}</a></p>
+    {% endif %}
+    <p><a href="{% url 'blawg:blog_list' blog.user %}">{% trans 'Back' %}</a></p>
+</nav>
+{% endblock %}

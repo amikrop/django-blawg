@@ -1,0 +1,17 @@
+{% extends 'blawg/form.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Delete entry' %}{% endblock %}
+
+{% block main %}
+<h1>{% trans 'Delete entry' %}</h1>
+<div class="trunk">
+    <p>{% trans 'Are you sure you want to delete entry &ldquo;' %}{{ entry }}{% trans '&rdquo;?' %}</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="{% trans 'Delete' %}" class="delete" />
+    </form>
+</div>
+<nav><a href="{% url 'blawg:entry_update' user blog.slug entry.slug %}">{% trans 'Cancel' %}</a></nav>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'blawg/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{{ blog }}{% endblock %}
+
+{% block main %}
+<h1>{{ blog }}</h1>
+<h2>{{ blog.description }}</h2>
+<div class="trunk">
+    <p class="date">
+        {% block archive_date %}{% endblock %}
+    </p>
+    {% for entry in entry_list %}
+    <div class="entity">
+        <p class="title"><a href="{{ entry.get_absolute_url }}">{{ entry }}</a></p>
+        <p>{{ entry.content|linebreaks }}</p>
+    </div>
+    {% endfor %}
+</div>
+<nav><p><a href="{% url 'blawg:blog_list' blog.user %}">{% trans 'Back' %}</a></p></nav>
+{% endblock %}

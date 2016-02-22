@@ -1,0 +1,31 @@
+form p {
+    line-height: 2em;
+}
+input[type="text"] {
+    width: 20em;
+}
+input[type="checkbox"] {
+    margin-left: 0.8em;
+}
+input[type="submit"] {
+    display: block;
+    margin: 1.3em auto 0;
+    padding: 0.13em 0.3em;
+}
+input.delete {
+    margin-top: 2.5em;
+}
+.public {
+    margin-top: 0.7em;
+}
+.titleinput {
+    margin-left: 4.2em;
+}
+#description {
+    width: 40em;
+}
+#content {
+    margin-top: 1em;
+    width: 35em;
+    height: 10em;
+}

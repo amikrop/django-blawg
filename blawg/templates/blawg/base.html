@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+<title>{% block title %}Blawg{% endblock %}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'blawg/css/style.css' %}" />
+{% endblock %}
+
+{% block body %}
+<div id="blawg">
+    {% block main %}{% endblock %}
+</div>
+{% endblock %}

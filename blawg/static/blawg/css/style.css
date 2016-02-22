@@ -1,0 +1,80 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: verdana, arial, sans-serif;
+    background-color: #f3f5f0;
+}
+#blawg {
+    display: table;
+    margin: 2em auto 0;
+    padding: 1.5em 3em 2em;
+    border: solid 1px;
+    border-radius: 1em;
+    background-color: white;
+}
+h1 {
+    text-align: center;
+    font-size: 1.7em;
+}
+h2 {
+    margin-top: 0.8em;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: normal;
+}
+a {
+    color: #0e3dc9;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+nav {
+    display: block;
+    float: right;
+    margin-top: 0.8em;
+    line-height: 1.7em;
+}
+.trunk {
+    margin-top: 2em;
+}
+.info, .success, .error, .date {
+    margin-bottom: 1em;
+    text-align: center;
+    font-size: 0.9em;
+    font-style: italic;
+}
+.success {
+    color: #00660f;
+}
+.error {
+    color: #ad0009;
+    font-weight: bold;
+    font-style: normal;
+}
+.date {
+    margin-top: -0.3em;
+    margin-bottom: 1.5em;
+}
+.entity {
+    margin-bottom: 1.3em;
+    line-height: 1.6em;
+}
+.title {
+    font-size: 1.1em;
+}
+.content {
+    margin-bottom: 1em;
+    line-height: 1.6em;
+}
+.created, .modified , .edited {
+    margin-bottom: 0.5em;
+    font-size: 0.8em;
+    font-style: italic;
+}
+.created {
+    margin-bottom: 1em;
+    text-align: right;
+}

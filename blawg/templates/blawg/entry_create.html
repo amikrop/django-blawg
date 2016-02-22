@@ -1,0 +1,38 @@
+{% extends 'blawg/form.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'New entry' %}{% endblock %}
+
+{% block main %}
+<h1>{% trans 'New entry' %}</h1>
+<div class="trunk">
+    {% for field in form %}
+        {% for error in field.errors %}
+        <p class="error">{{ error }}</p>
+        {% endfor %}
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="title">{% trans 'Title' %}</label>
+            <input type="text" name="title" id="title" />
+        </p>
+        <p><textarea name="content" id="content"></textarea></p>
+        <p class="public">
+            <label for="public">{% trans 'Public' %}</label>
+            <input type="checkbox" name="public" id="public"{% if blog.public %} checked="checked"{% endif %} />
+        </p>
+        <p>
+            <label for="allow_comments">{% trans 'Allow comments' %}</label>
+            <input type="checkbox" name="allow_comments" id="allow_comments"{% if blog.allow_comments %} checked="checked"{% endif %} />
+        </p>
+        <p>
+            <label for="allow_anonymous_comments">{% trans 'Allow anonymous comments' %}</label>
+            <input type="checkbox" name="allow_anonymous_comments" id="allow_anonymous_comments"{% if blog.allow_anonymous_comments %} checked="checked"{% endif %} />
+        </p>
+        <input type="submit" value="{% trans 'Create' %}" />
+    </form>
+</div>
+<nav><p><a href="{{ blog.get_absolute_url }}">{% trans 'Cancel' %}</a></p></nav>
+{% endblock %}

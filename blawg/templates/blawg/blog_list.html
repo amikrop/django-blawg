@@ -1,0 +1,29 @@
+{% extends 'blawg/base.html' %}
+
+{% load i18n %}
+
+{% block title %}{% trans 'Blogs' %}{% endblock %}
+
+{% block main %}
+<h1>{% trans 'Blogs' %}</h1>
+<div class="trunk">
+    {% if messages %}
+    <div class="success">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% for blog in blog_list %}
+    <div class="entity">
+        <p class="title"><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></p>
+        <p>{{ blog.description }}</p>
+    </div>
+    {% empty %}
+    <p class="info">{% trans 'User has no blogs' %}</p>
+    {% endfor %}
+</div>
+{% if owner %}
+<nav><p><a href="{% url 'blawg:blog_create' %}">{% trans 'Create' %}</a></p></nav>
+{% endif %}
+{% endblock %}

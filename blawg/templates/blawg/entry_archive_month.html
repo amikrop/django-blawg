@@ -1,0 +1,8 @@
+{% extends 'blawg/archive.html' %}
+
+{% block archive_date %}
+{% with year=month|date:'Y' %}
+    {{ month|date:'M' }}
+    <a href="{% url 'blawg:entry_year' blog.user blog.slug year %}">{{ year }}</a>
+{% endwith %}
+{% endblock %}

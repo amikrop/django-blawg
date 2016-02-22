@@ -1,0 +1,10 @@
+{% extends 'blawg/base.html' %}
+
+{% load static %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'blawg/css/form.css' %}" />
+<script type="text/javascript" src="{% static 'blawg/js/jquery-2.1.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'blawg/js/form.js' %}"></script>
+{% endblock %}

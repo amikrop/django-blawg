@@ -1,0 +1,140 @@
+{% extends 'blawg/base.html' %}
+
+{% load static %}
+{% load i18n %}
+{% load mptt_tags %}
+
+{% block title %}{{ entry }}{% endblock %}
+
+{% block head %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'blawg/css/comment.css' %}" />
+<script type="text/javascript" src="{% static 'blawg/js/js.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'blawg/js/jquery-2.1.4.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'blawg/js/comment.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+{% trans 'Anonymous' as anonymous %}
+{% trans 'Delete' as delete %}
+<script type="text/javascript">
+    var anonymous = '{{ anonymous }}';
+    var del = '{{ delete }}';
+    var delete_url = '{% url "blawg:comment_delete" %}';
+    var delete_confirmation = '{% trans "Are you sure you want to delete this comment?" %}';
+    var comment_delete_failed = '{% trans "Could not delete comment" %}';
+</script>
+<h1>{{ entry }}</h1>
+<div class="trunk">
+    {% if messages %}
+    <div class="success">
+        {% for message in messages %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <p class="created">
+        {% with year=entry.created|date:'Y' month=entry.created|date:'m' day=entry.created|date:'d' %}
+        <a href="{% url 'blawg:entry_day' blog.user blog.slug year month day %}">{{ day }}</a>
+        <a href="{% url 'blawg:entry_month' blog.user blog.slug year month %}">{{ entry.created|date:'M' }}</a>
+        <a href="{% url 'blawg:entry_year' blog.user blog.slug year %}">{{ year }}</a>,
+        {% endwith %}
+        {{ entry.created|date:'H:i'  }}
+    </p>
+    <div class="content">{{ entry.content|linebreaks }}</div>
+    <p class="modified">
+        {% trans 'Edited' %}
+        {{ entry.modified|date:'d M Y, H:i' }}
+    </p>
+</div>
+{% if can_comment %}
+{% trans 'Name' as name %}
+{% trans 'Reply' as reply %}
+{% trans 'Edit' as edit %}
+{% trans 'Edited' as edited %}
+<script type="text/javascript">
+    var user = '{{ request.user }}';
+    var user_url = '{% url "blawg:blog_list" request.user %}';
+    var entry = {{ entry.pk }};
+    var guest = false;
+    var create_url = '{% url "blawg:comment_create" %}';
+    var update_url = '{% url "blawg:comment_update" %}';
+    var empty_content_warning = '{% trans "Comment must not be empty" %}';
+    var comment_creation_failed = '{% trans "Could not post comment" %}';
+    var comment_update_failed = '{% trans "Could not update comment" %}';
+    var name_word = '{{ name }}';
+    var reply = '{{ reply }}';
+    var edit = '{{ edit }}';
+    var edited = '{{ edited }}';
+    var save = '{% trans "Save" %}';
+    var cancel = '{% trans "Cancel" %}';
+</script>
+<div class="form commentform">
+    {% if not user.is_authenticated %}
+    <script type="text/javascript">
+        guest = true;
+        var max_length = {{ guest_name_max_length }};
+        var max_length_warning = '{% blocktrans %}Name must consist of {{ guest_name_max_length }} characters maximum{% endblocktrans %}';
+    </script>
+    <p class="name">
+        <label for="name">{{ name }}</label>
+        <input type="text" id="name" />
+    </p>
+    {% endif %}
+    <textarea></textarea>
+    <button>{% trans 'Comment' %}</button>
+</div>
+{% endif %}
+<nav>
+    {% if owner %}
+    <p><a href="{% url 'blawg:entry_update' user blog.slug entry.slug %}">{{ edit }}</a></p>
+    {% endif %}
+    <p><a href="{{ blog.get_absolute_url }}">{% trans 'Back' %}</a></p>
+</nav>
+{% if nodes %}
+<div id="commentseparator"></div>
+<div id="comments">
+    <h3>{% trans 'Comments' %}</h3>
+    {% recursetree nodes %}
+    <div>
+        <div class="comment">
+            <p class="header">
+                {% if node.user %}
+                <span class="commentname"><a href="{% url 'blawg:blog_list' node.user %}">{{ node.user }}</a></span>
+                {% else %}
+                    {% if node.guest_name %}
+                    <span class="commentname">{{ node.guest_name }}</span>
+                    {% else %}
+                    <span class="anonymous">{{ anonymous }}</span>
+                    {% endif %}
+                {% endif %}
+                <span class="commentdate">{{ node.created|date:'d M Y, H:i' }}</span>
+            </p>
+            <div class="commentcontent">{{ node.content|linebreaksbr }}</div>
+            {% if node.modified != node.created %}
+            <p class="edited">
+                {{ edited }}
+                {{ node.modified|date:'d M Y, H:i' }}
+            <p>
+            {% endif %}
+            {% if can_comment %}
+            <p class="reply"><a href="">{{ reply }}</a></p>
+            {% endif %}
+            {% if user == node.user %}
+            <p class="edit"><a href="">{{ edit }}</a></p>
+            {% endif %}
+            {% if user == blog.user or user == node.user %}
+            <p class="delete"><a href="">{{ delete }}</a></p>
+            {% endif %}
+            <input type="hidden" value="{{ node.pk }}" />
+        </div>
+        {% if not node.is_leaf_node %}
+        <div class="children">
+            {{ children }}
+        </div>
+        {% endif %}
+    </div>
+    {% endrecursetree %}
+</div>
+{% endif %}
+{% endblock %}
