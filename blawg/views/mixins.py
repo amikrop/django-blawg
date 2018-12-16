@@ -170,7 +170,7 @@ class CommentMixin(object):
         try:
             return super(CommentMixin, self).dispatch(request)
         except AjaxBadRequest:
-            return HttpResponseBadRequest
+            return HttpResponseBadRequest()
 
     def form_invalid(self, form):
         """Raise `AjaxBadRequest` if form is invalid."""
